@@ -1,0 +1,96 @@
+<mat-grid-list cols="7">
+    <!-- LEFT -->
+    <mat-grid-tile colspan="1" rowspan="6">
+        <table mat-table [dataSource]="pokemons" class="mat-elevation-z8">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{getPokeId(element.url)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="getPokemonByUrl(element.url)">
+                    <i class="fa fa-eye" aria-hidden="true">Go</i>
+                  </button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-grid-tile>
+    <!-- HEAD -->
+    <mat-grid-tile colspan="2" rowspan="1">
+        <!-- <mat-form-field>
+            <mat-select [(ngModel)]="select.url" [(value)]="select.url" (selectionChange)="getPokemonById($event.value)">
+                <mat-option *ngFor="let pokemon of pokemons| filterPokemonPipe:'name':id" value="{{pokemon.url}}"> {{ getPokeId(pokemon.url) }} </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+
+        <input type="number" class="form-control" id="id" [(ngModel)]="id" name="id">
+
+        <button mat-raised-button color="accent" (click)="getPokemonById(id)">Rechercher l'Id</button>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="1">
+        <input type="text" class="form-control" id="filtre" [(ngModel)]="filtre" name="filtre">
+        <mat-form-field>
+            <mat-select [(ngModel)]="select.url" [(value)]="select.url" (selectionChange)="getPokemonByUrl($event.value)">
+                <mat-option *ngFor="let pokemon of pokemons| filterPokemonPipe:'name':filtre" value="{{pokemon.url}}"> {{ pokemon.name}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-grid-tile>
+
+    <!-- CONTENT -->
+    <mat-grid-tile colspan="2" rowspan="4">
+        <mat-card class="example-card ">
+            <img mat-card-image src="{{select.sprites.front_default}}" alt="Photo of a {{select.name}}">
+            <img mat-card-image src="{{select.sprites.back_default}}" alt="Photo of a {{select.name}}">
+            <img mat-card-image src="{{select.sprites.front_shiny}}" alt="Photo of a {{select.name}}">
+
+        </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="4">
+        <mat-card class="example-card ">
+            <mat-card-header>
+                <mat-card-title>{{select.name}}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="{{select.sprites.front_default}}" alt="Photo of a {{select.name}}">
+            <mat-card-content>
+                <p>
+                    Name : {{select.name}} <br> Height : {{select.height}} <br> Weight : {{select.weight}}
+                </p>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile colspan="2" rowspan="4">
+        <h3>ABILITIES</h3>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let abilities of ability">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{abilities.name}}
+                    </mat-panel-title>
+                    <!-- <mat-panel-description>
+                        Type your name and age
+                    </mat-panel-description> -->
+                </mat-expansion-panel-header>
+
+                <p>Effect : {{abilities.effect_entries[0].effect}}</p>
+                <p>short effect : {{abilities.effect_entries[0].short_effect}}</p>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-grid-tile>
+
+</mat-grid-list>
